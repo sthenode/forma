@@ -99,7 +99,39 @@ protected:
     color_channels_t color_channels_;
     color_sample_t color_sample_[color_channels_count + 2];
 };
-typedef pixelt<> pixel;
+typedef pixelt<> pixel_t;
+
+namespace rgb {
+///////////////////////////////////////////////////////////////////////
+///  Class: pixel_t
+///////////////////////////////////////////////////////////////////////
+class _EXPORT_CLASS pixel_t: public format::pixel_t {
+public:
+    typedef format::pixel_t extends;
+
+    pixel_t
+    (color_sample_t red, color_sample_t green,
+     color_sample_t blue, color_sample_t max)
+    : extends(color::channels_rgb, max, red, green, blue) {
+    }
+};
+} // namespace rgb
+
+namespace rgba {
+///////////////////////////////////////////////////////////////////////
+///  Class: pixel_t
+///////////////////////////////////////////////////////////////////////
+class _EXPORT_CLASS pixel_t: public format::pixel_t {
+public:
+    typedef format::pixel_t extends;
+
+    pixel_t
+    (color_sample_t red, color_sample_t green,
+     color_sample_t blue, color_sample_t alpha, color_sample_t max)
+    : extends(color::channels_rgba, max, red, green, blue, alpha) {
+    }
+};
+} // namespace rgba
 
 } /// namespace format
 } /// namespace image

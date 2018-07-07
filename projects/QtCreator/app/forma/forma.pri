@@ -53,6 +53,16 @@ $${forma_DEFINES} \
 # forma_exe HEADERS
 #
 forma_exe_HEADERS += \
+$${NADIR_SRC}/xos/io/crt/file/reader.hpp \
+$${FILA_SRC}/xos/console/main_main.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/color/rgba.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/color/axes.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/value.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/rgba.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/reader_events.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/reader.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/bytes/reader.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/bytes/bgra_reader.hpp \
 $${FORMA_SRC}/xos/graphic/image/format/color/channels/rgb.hpp \
 $${FORMA_SRC}/xos/graphic/image/format/color/channels.hpp \
 $${FORMA_SRC}/xos/graphic/image/format/pixel.hpp \
@@ -65,11 +75,19 @@ $${FORMA_SRC}/xos/graphic/image/format/png/libpng/info_created.hpp \
 $${FORMA_SRC}/xos/graphic/image/format/png/libpng/info.hpp \
 $${FORMA_SRC}/xos/graphic/image/format/png/libpng/read_struct.hpp \
 $${FORMA_SRC}/xos/graphic/image/format/png/libpng/info_reader.hpp \
-$${FILA_SRC}/xos/console/main_main.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/png/libpng/reader_events.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/png/libpng/reader.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/png/libpng/pixel/reader.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/png/libpng/pixel/bgra_reader.hpp \
+$${FORMA_SRC}/xos/app/console/forma/main.hpp \
 
 # forma_exe SOURCES
 #
 forma_exe_SOURCES += \
+$${FILA_SRC}/xos/console/main_main.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/color/axes.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/value.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/rgba.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/color/channels/rgb.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/color/channels.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/pixel.cpp \
@@ -82,7 +100,10 @@ $${FORMA_SRC}/xos/graphic/image/format/png/libpng/info_created.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/png/libpng/info.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/png/libpng/read_struct.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/png/libpng/info_reader.cpp \
-$${FILA_SRC}/xos/console/main_main.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/png/libpng/pixel/reader.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/png/libpng/pixel/bgra_reader.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/pixel/reader_events.cpp \
+$${FORMA_SRC}/xos/app/console/forma/main.cpp \
 
 ########################################################################
 # forma_exe FRAMEWORKS

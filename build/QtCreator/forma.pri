@@ -29,6 +29,27 @@ HOME = /home/jboyd
 }
 
 ########################################################################
+# libjpeg
+#
+# pkg-config --cflags --libs libjpeg
+#
+
+# build libjpeg INCLUDEPATH
+#
+build_libjpeg_INCLUDEPATH += \
+$${HOME}/build/jpeg/include \
+
+# build libjpeg DEFINES
+#
+build_libjpeg_DEFINES += \
+
+# build libjpeg LIBS
+#
+build_libjpeg_LIBS += \
+-L$${HOME}/build/jpeg/lib \
+-ljpeg \
+
+########################################################################
 # libpng
 #
 # pkg-config --cflags --libs libpng
@@ -132,6 +153,7 @@ $${build_crono_INCLUDEPATH} \
 $${build_nadir_INCLUDEPATH} \
 $${build_rostra_INCLUDEPATH} \
 $${build_libpng_INCLUDEPATH} \
+$${build_libjpeg_INCLUDEPATH} \
 
 
 # build forma DEFINES
@@ -140,8 +162,9 @@ build_forma_DEFINES += \
 $${build_rostra_DEFINES} \
 $${build_nadir_DEFINES} \
 $${build_crono_DEFINES} \
-$${build_libpng_DEFINES} \
 $${build_fila_DEFINES} \
+$${build_libpng_DEFINES} \
+$${build_libjpeg_DEFINES} \
 
 
 # build forma LIBS
@@ -152,5 +175,4 @@ $${build_crono_LIBS} \
 $${build_nadir_LIBS} \
 $${build_rostra_LIBS} \
 $${build_libpng_LIBS} \
-
-
+$${build_libjpeg_LIBS} \

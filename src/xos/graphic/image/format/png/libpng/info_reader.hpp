@@ -72,6 +72,30 @@ public:
         return success;
     }
 
+    virtual bool begin_read(const char* file) {
+        if ((file) && (read_struct_.begin_read(file))) {
+            return true;
+        }
+        return false;
+    }
+    virtual bool end_read(const char* file) {
+        if ((file) && (read_struct_.end_read(file))) {
+            return true;
+        }
+        return false;
+    }
+    virtual bool begin_read(FILE* file) {
+        if ((file) && (read_struct_.begin_read(file))) {
+            return true;
+        }
+        return false;
+    }
+    virtual bool end_read(FILE* file) {
+        if ((file) && (read_struct_.end_read(file))) {
+            return true;
+        }
+        return false;
+    }
     virtual ssize_t read(info_t& info) {
         ssize_t count = read_struct_.read(info);
         return count;

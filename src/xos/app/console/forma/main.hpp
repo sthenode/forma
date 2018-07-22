@@ -59,15 +59,16 @@ protected:
         int err = 0;
         size_t count = 0;
         const char_t* arg = 0;
+        FILE* file = 0;
         io::crt::file::byte_reader in(this->std_in());
-        graphic::image::format::png::libpng::pixel::bgra_reader png(in);
+        graphic::image::format::png::libpng::pixel::bgra_reader png;//(in);
 
         if ((optind < argc) && (argv) && (arg = argv[optind]) && (arg[0])) {
             if (!(in.open(arg))) {
             }
         }
-        if ((in.attached_to())) {
-            if (0 < (count = png.read())) {
+        if ((file = in.attached_to())) {
+            if (0 < (count = png.read(file))) {
             }
         }
         if (!(in.closed())) {

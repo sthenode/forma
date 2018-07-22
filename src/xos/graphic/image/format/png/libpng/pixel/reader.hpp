@@ -83,9 +83,31 @@ public:
       pixel_value_interpretation_(pixel_value_interpretation_none),
       on_PNGPixel_(0) {
     }
+    readert(FILE* in)
+    : reader_(in, this),
+      pixel_value_interpretation_(pixel_value_interpretation_none),
+      on_PNGPixel_(0) {
+    }
+    readert()
+    : reader_(this),
+      pixel_value_interpretation_(pixel_value_interpretation_none),
+      on_PNGPixel_(0) {
+    }
     virtual ~readert() {
     }
 
+    virtual bool read(const char* file) {
+        if ((reader_.read(file))) {
+            return true;
+        }
+        return false;
+    }
+    virtual bool read(FILE* file) {
+        if ((reader_.read(file))) {
+            return true;
+        }
+        return false;
+    }
     virtual bool read() {
         if ((reader_.read())) {
             return true;

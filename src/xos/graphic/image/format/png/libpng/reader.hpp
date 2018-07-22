@@ -52,15 +52,52 @@ public:
     typedef format::rgb::pixel_t rgb_pixel_t;
     typedef format::rgba::pixel_t rgba_pixel_t;
 
-    readert
-    (byte_reader_t& in, reader_events_t* reader_events_forward_to = 0)
+    readert(byte_reader_t& in, reader_events_t* reader_events_forward_to = 0)
     : extends(reader_events_forward_to),
       read_struct_(in, 0, false), info_reader_(read_struct_, 0, false),
+      on_PNGCol_(0), colBytes_(0), bytesRead_(0) {
+    }
+    readert(FILE* in, reader_events_t* reader_events_forward_to = 0)
+    : extends(reader_events_forward_to),
+      read_struct_(in, 0, false), info_reader_(read_struct_, 0, false),
+      on_PNGCol_(0), colBytes_(0), bytesRead_(0) {
+    }
+    readert(reader_events_t* reader_events_forward_to = 0)
+    : extends(reader_events_forward_to),
+      read_struct_(0, false), info_reader_(read_struct_, 0, false),
       on_PNGCol_(0), colBytes_(0), bytesRead_(0) {
     }
     virtual ~readert() {
     }
 
+    virtual ssize_t read(const char* file) {
+        if ((info_reader_.create())) {
+            size_t count = 0;
+            if ((info_reader_.begin_read(file))) {
+                size_t amount = read(info_reader_);
+                if ((info_reader_.end_read(file))) {
+                    count += amount;
+                }
+            }
+            info_reader_.destroy();
+            return count;
+        }
+        return 0;
+    }
+    virtual ssize_t read(FILE* file) {
+        if ((info_reader_.create())) {
+            size_t count = 0;
+            if ((info_reader_.begin_read(file))) {
+                size_t amount = read(info_reader_);
+                if ((info_reader_.end_read(file))) {
+                    count += amount;
+                }
+            }
+            info_reader_.destroy();
+            return count;
+        }
+        return 0;
+    }
     virtual ssize_t read() {
         if ((info_reader_.create())) {
             size_t count = read(info_reader_);

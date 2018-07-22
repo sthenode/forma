@@ -35,7 +35,7 @@ namespace pixel {
 template <class TImplements = implement_base>
 class _EXPORT_CLASS reader_eventst: virtual public TImplements {
 public:
-    typedef TImplements Implements;
+    typedef TImplements implements;
 
     typedef pixel::rgba::value_t rgba_pixel_t;
     typedef pixel::value_t pixel_t;
@@ -45,6 +45,7 @@ public:
         pixel_value_interpretation_greyscale = pixel::value_interpretation_greyscale,
         pixel_value_interpretation_rgb = pixel::value_interpretation_rgb,
         pixel_value_interpretation_rgba = pixel::value_interpretation_rgba,
+        pixel_value_interpretation_palette = pixel::value_interpretation_palette,
     };
 
     virtual bool on_image_pixel

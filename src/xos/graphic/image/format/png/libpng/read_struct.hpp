@@ -23,7 +23,7 @@
 
 #include "xos/graphic/image/format/png/libpng/struct_created.hpp"
 #include "xos/graphic/image/format/png/libpng/info.hpp"
-#include "xos/io/reader.hpp"
+#include "xos/io/crt/file/reader.hpp"
 
 namespace xos {
 namespace graphic {
@@ -47,11 +47,19 @@ public:
     typedef info info_t;
     typedef read_structt read_struct_t;
     typedef typename implements::attached_t attached_t;
+    typedef xos::io::crt::file::byte_reader byte_file_t;
     typedef xos::io::byte_reader byte_reader_t;
 
     read_structt
     (byte_reader_t& in, attached_t detached = 0, bool is_created = false)
     : extends(detached, is_created), in_(in) {
+    }
+    read_structt
+    (FILE* file, attached_t detached = 0, bool is_created = false)
+    : extends(detached, is_created), file_(file), in_(file_) {
+    }
+    read_structt(attached_t detached = 0, bool is_created = false)
+    : extends(detached, is_created), in_(file_) {
     }
     virtual ~read_structt() {
     }
@@ -88,6 +96,30 @@ public:
         return false;
     }
 
+    virtual bool begin_read(const char* file) {
+        if ((file) && (file_.open(file))) {
+            return true;
+        }
+        return false;
+    }
+    virtual bool end_read(const char* file) {
+        if ((file) && (file_.close())) {
+            return true;
+        }
+        return false;
+    }
+    virtual bool begin_read(FILE* file) {
+        if ((file) && (file_.attach(file))) {
+            return true;
+        }
+        return false;
+    }
+    virtual bool end_read(FILE* file) {
+        if ((file) && (file_.detach())) {
+            return true;
+        }
+        return false;
+    }
     virtual ssize_t read(info_t& info) {
         ssize_t count = info.Read();
         return count;
@@ -117,6 +149,7 @@ public:
     }
 
 protected:
+    byte_file_t file_;
     byte_reader_t& in_;
 };
 typedef read_structt<> read_struct;

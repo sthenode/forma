@@ -21,7 +21,7 @@
 #ifndef _XOS_GRAPHIC_IMAGE_FORMAT_PNG_LIBPNG_INFO_CREATED_HPP
 #define _XOS_GRAPHIC_IMAGE_FORMAT_PNG_LIBPNG_INFO_CREATED_HPP
 
-#include "xos/graphic/image/format/png/libpng/struct_created.hpp"s"
+#include "xos/graphic/image/format/png/libpng/struct_created.hpp"
 
 namespace xos {
 namespace graphic {

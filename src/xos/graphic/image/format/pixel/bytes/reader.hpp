@@ -65,10 +65,16 @@ public:
     typedef TImplements implements;
     typedef TExtends extends;
 
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
     reader_extendt(io::byte_reader& in)
     : extends(in), image_width_(0), image_height_(0),
+      image_depth_(0), image_size_(0), bytes_(0) {
+    }
+    reader_extendt(FILE* in)
+    : extends(in), image_width_(0), image_height_(0),
+      image_depth_(0), image_size_(0), bytes_(0) {
+    }
+    reader_extendt()
+    : image_width_(0), image_height_(0),
       image_depth_(0), image_size_(0), bytes_(0) {
     }
     virtual ~reader_extendt() {
@@ -113,8 +119,6 @@ public:
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
 protected:
     size_t image_width_, image_height_, image_depth_, image_size_;
     byte_t* bytes_;

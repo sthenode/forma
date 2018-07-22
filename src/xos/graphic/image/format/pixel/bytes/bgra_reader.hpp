@@ -54,6 +54,10 @@ public:
 
     bgra_readert(io::byte_reader& in): extends(in), on_image_pixel_(0) {
     } 
+    bgra_readert(FILE* in): extends(in), on_image_pixel_(0) {
+    } 
+    bgra_readert(): on_image_pixel_(0) {
+    } 
     virtual ~bgra_readert() {
         this->free_image();
     }

@@ -87,6 +87,12 @@ $${FORMA_SRC}/xos/graphic/image/format/jpeg/libjpeg/reader_events.hpp \
 $${FORMA_SRC}/xos/graphic/image/format/jpeg/libjpeg/reader.hpp \
 $${FORMA_SRC}/xos/graphic/image/format/jpeg/libjpeg/pixel/reader.hpp \
 $${FORMA_SRC}/xos/graphic/image/format/jpeg/libjpeg/pixel/bgra_reader.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/giflib.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/file.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/file_reader_events.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/file_reader.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/pixel/reader.hpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/pixel/bgra_reader.hpp \
 $${FORMA_SRC}/xos/app/console/forma/main.hpp \
 
 # forma_exe SOURCES
@@ -108,14 +114,16 @@ $${FORMA_SRC}/xos/graphic/image/format/png/libpng/info_created.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/png/libpng/info.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/png/libpng/read_struct.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/png/libpng/info_reader.cpp \
-$${FORMA_SRC}/xos/graphic/image/format/png/libpng/pixel/bgra_reader.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/jpeg/libjpeg/jpeg.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/jpeg/libjpeg/error.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/jpeg/libjpeg/color_space.cpp \
 $${FORMA_SRC}/xos/graphic/image/format/jpeg/libjpeg/decompress.cpp \
-$${FORMA_SRC}/xos/graphic/image/format/jpeg/libjpeg/reader_events.cpp \
-$${FORMA_SRC}/xos/graphic/image/format/jpeg/libjpeg/pixel/reader.cpp \
-$${FORMA_SRC}/xos/graphic/image/format/jpeg/libjpeg/pixel/bgra_reader.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/giflib.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/file.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/file_reader_events.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/file_reader.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/pixel/reader.cpp \
+$${FORMA_SRC}/xos/graphic/image/format/gif/giflib/pixel/bgra_reader.cpp \
 $${FORMA_SRC}/xos/app/console/forma/main.cpp \
 
 ########################################################################

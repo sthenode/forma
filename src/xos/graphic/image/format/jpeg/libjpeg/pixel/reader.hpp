@@ -86,6 +86,15 @@ public:
     virtual ~reader() {
     }
 
+    virtual bool read(const char* file) {
+        if ((file)) {
+            libjpeg::reader reader(this);
+            if ((reader.read(file))) {
+                return true;
+            }
+        }
+        return false;
+    }
     virtual bool read(FILE* file) {
         if ((file)) {
             libjpeg::reader reader(this);

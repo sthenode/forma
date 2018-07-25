@@ -23,9 +23,9 @@
 
 #include "xos/console/getopt/main.hpp"
 #include "xos/io/crt/file/reader.hpp"
-#include "xos/graphic/image/format/png/libpng/reader.hpp"
-#include "xos/graphic/image/format/png/libpng/pixel/reader.hpp"
+#include "xos/graphic/image/format/jpeg/libjpeg/pixel/bgra_reader.hpp"
 #include "xos/graphic/image/format/png/libpng/pixel/bgra_reader.hpp"
+#include "xos/graphic/image/format/gif/giflib/pixel/bgra_reader.hpp"
 
 namespace xos {
 namespace app {
@@ -59,19 +59,13 @@ protected:
         int err = 0;
         size_t count = 0;
         const char_t* arg = 0;
-        FILE* file = 0;
-        io::crt::file::byte_reader in(this->std_in());
-        graphic::image::format::png::libpng::pixel::bgra_reader png;//(in);
+        graphic::image::format::jpeg::libjpeg::pixel::bgra_reader jpeg;
+        graphic::image::format::png::libpng::pixel::bgra_reader png;
+        graphic::image::format::gif::giflib::pixel::bgra_reader gif;
 
         if ((optind < argc) && (argv) && (arg = argv[optind]) && (arg[0])) {
-            if (!(in.open(arg))) {
+            if ((gif.read(arg))) {
             }
-        }
-        if ((file = in.attached_to())) {
-            if (0 < (count = png.read(file))) {
-            }
-        }
-        if (!(in.closed())) {
         }
         return err;
     }

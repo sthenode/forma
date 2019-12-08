@@ -50,6 +50,7 @@ public:
         pixel_value_interpretation_greyscale = pixel::value_interpretation_greyscale,
         pixel_value_interpretation_rgb = pixel::value_interpretation_rgb,
         pixel_value_interpretation_rgba = pixel::value_interpretation_rgba,
+        pixel_value_interpretation_palette = pixel::value_interpretation_palette,
     };
 
     bgra_readert(io::byte_reader& in): extends(in), on_image_pixel_(0) {
@@ -66,7 +67,7 @@ public:
     (size_t image_width, size_t image_height, size_t image_planes,
      size_t values_per_pixel, size_t bits_per_value,
      pixel_value_interpretation_t pixel_value_interpretation) {
-        size_t image_byte_depth = 0, image_size = 0;
+        size_t image_bit_depth = 0, image_byte_depth = 0, image_size = 0;
 
         switch (pixel_value_interpretation) {
 
@@ -74,6 +75,7 @@ public:
             if ((1 == image_planes) && (0 == values_per_pixel)
                 && ((24 == bits_per_value))) {
                 image_byte_depth = 4;
+                image_bit_depth = image_byte_depth*8;
                 image_size = (image_height * image_width * image_byte_depth);
                 on_image_pixel_ = &derives::on_rgb_image_pixel;
             } else {
@@ -86,6 +88,7 @@ public:
             if ((1 == image_planes) && (8 == bits_per_value)
                 && ((1 == values_per_pixel))) {
                 image_byte_depth = 4;
+                image_bit_depth = image_byte_depth*8;
                 image_size = (image_height * image_width * image_byte_depth);
                 on_image_pixel_ = &derives::on_greyscale_image_pixel;
             } else {
@@ -98,6 +101,7 @@ public:
             if ((1 == image_planes) && (8 == bits_per_value)
                 && ((3 == values_per_pixel))) {
                 image_byte_depth = 4;
+                image_bit_depth = image_byte_depth*8;
                 image_size = (image_height * image_width * image_byte_depth);
                 on_image_pixel_ = &derives::on_rgb_image_pixel;
             } else {
@@ -110,8 +114,26 @@ public:
             if ((1 == image_planes) && (8 == bits_per_value)
                 && ((4 == values_per_pixel))) {
                 image_byte_depth = 4;
+                image_bit_depth = image_byte_depth*8;
                 image_size = (image_height * image_width * image_byte_depth);
                 on_image_pixel_ = &derives::on_rgba_image_pixel;
+            } else {
+                LOG_ERROR("invalid image configuration values_per_pixel = " << values_per_pixel << ", bits_per_value = " << bits_per_value << "");
+                return false;
+            }
+            break; }
+
+        case pixel_value_interpretation_palette: {
+            if ((1 == image_planes) && (8 == bits_per_value)
+                && (3 <= values_per_pixel) && (4 >= values_per_pixel)) {
+                image_byte_depth = 4;
+                image_bit_depth = image_byte_depth*8;
+                image_size = (image_height * image_width * image_byte_depth);
+                if (3 < values_per_pixel) {
+                    on_image_pixel_ = &derives::on_rgba_image_pixel;
+                } else {
+                    on_image_pixel_ = &derives::on_rgb_image_pixel;
+                }
             } else {
                 LOG_ERROR("invalid image configuration values_per_pixel = " << values_per_pixel << ", bits_per_value = " << bits_per_value << "");
                 return false;
@@ -124,7 +146,7 @@ public:
         }
         this->free_image();
         if ((this->alloc_image
-             (image_width, image_height, image_byte_depth*8, image_size))) {
+             (image_width, image_height, image_bit_depth, image_size))) {
             return true;
         }
         return false;

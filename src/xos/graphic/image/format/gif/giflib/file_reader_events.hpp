@@ -40,7 +40,6 @@ template <class TImplements = file_reader_eventst_implements>
 class _EXPORT_CLASS file_reader_eventst: virtual public TImplements {
 public:
     typedef TImplements implements;
-    typedef format::pixel_t pixel_t;
 
     virtual bool OnGifImage
     (TSIZE height, TSIZE width, 

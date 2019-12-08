@@ -39,7 +39,6 @@ typedef implement_base reader_events_implements;
 class _EXPORT_CLASS reader_events: virtual public reader_events_implements {
 public:
     typedef reader_events_implements implements;
-    typedef format::pixel_t pixel_t;
 
     virtual bool on_jpeg_image
     (JDIMENSION output_height, JDIMENSION output_width,

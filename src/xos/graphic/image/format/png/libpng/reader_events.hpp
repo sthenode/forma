@@ -40,6 +40,7 @@ template
 class _EXPORT_CLASS reader_eventst: virtual public TImplements {
 public:
     typedef TImplements implements;
+
     typedef format::pixel_t pixel_t;
 
     virtual bool on_PNGPixel8

@@ -168,9 +168,127 @@ protected:
     }
 
 protected:
+    virtual bool OnGifImage
+    (TSIZE height, TSIZE width, 
+     TSIZE colors, UINT interlaceType,
+     GifPixelType backgroundPixel, 
+     ColorMapObject* colorMap) {
+        bool success = true;
+        GifPixelType* pixels = 0;
+        size_t pixelsSize = 0, pixelsLength = 0;
+        
+        LOG_DEBUG("OnBeginGifImage(height = " << height << ", width = " << width <<", ...)...");
+        if (!(success = OnBeginGifImage
+             (height, width, colors, interlaceType, backgroundPixel, colorMap))) {
+            LOG_ERROR("...failed on OnBeginGifImage(height = " << height << ", width = " << width <<", ...)");
+        } else {
+
+            if ((width <= (gif_pixel_buffer_.set_size(width)))
+                && ((width <= (gif_pixel_buffer_.set_length(width))))
+                && (pixels = gif_pixel_buffer_.elements(pixelsSize, pixelsLength))) {
+                TLENGTH count = 0;
+                TSIZE line = 0;
+                
+                LOG_DEBUG("for (line = 0; line < " << height << "; ++line) {...");
+                for (line = 0; line < height; ++line) {
+
+                    LOG_TRACE("gif_file_.GetLine(pixels = " << pointer_to_string(pixels) << ", width = " << width << ")...");
+                    if (width != (count = gif_file_.GetLine(pixels, width))) {
+                        LOG_ERROR("...failed width = " << width << " != " << count << " = gif_file_.GetLine(pixels = " << pointer_to_string(pixels) << ", width = " << width << ")...");
+                        success = false;
+                        break;
+                    }
+
+                    LOG_TRACE("OnGifLine(pixels = " << pointer_to_string(pixels) << ", width = " << width << ", line = " << line << ", ...)...");
+                    if (!(OnGifLine
+                          (pixels, width, line, height, width, 
+                           colors, interlaceType, backgroundPixel, colorMap))) {
+                        LOG_ERROR("...failed on OnGifLine(pixels = " << pointer_to_string(pixels) << ", width = " << width << ", line = " << line << ", ...)");
+                        success = false;
+                        break;
+                    }
+                }
+                LOG_DEBUG("...} for (...; " << line << " < " << height << ";...)");
+            }
+
+            LOG_DEBUG("OnEndGifImage(height = " << height << ", width = " << width <<", ...)...");
+            if (!(OnEndGifImage
+                  (height, width, colors, interlaceType, backgroundPixel, colorMap))) {
+                LOG_ERROR("...failed on OnEndGifImage(height = " << height << ", width = " << width <<", ...)");
+                success = false;
+            }
+        }
+        return success;
+    }
+    virtual bool OnGifLine
+    (GifPixelType* pixels, 
+     TSIZE pixelsLength, TSIZE pixelsLine,
+     TSIZE height, TSIZE width, 
+     TSIZE colors, UINT interlaceType,
+     GifPixelType backgroundPixel, 
+     ColorMapObject* colorMap) 
+    {
+        bool success = true;
+        
+        LOG_TRACE("OnBeginGifLine(pixels, pixelsLength, pixelsLine, height, width, ...)...");
+        if (!(success = OnBeginGifLine
+              (pixels, pixelsLength, pixelsLine, height, width, 
+               colors, interlaceType, backgroundPixel, colorMap))) {
+            LOG_ERROR("...failed on OnBeginGifLine(pixels, pixelsLength, pixelsLine, height, width, ...)");
+        } else {
+            TSIZE pixelColumn = 0;
+
+            LOG_TRACE("for (pixelColumn = 0; pixelColumn < pixelsLength; pixelColumn++) {...");
+            for (pixelColumn = 0; pixelColumn < pixelsLength; pixelColumn++) {
+                
+                LOG_TRACE("OnGifColumn(pixels[pixelColumn = " << pixelColumn << "], pixelColumn = " << pixelColumn << ", pixelsLine = " << pixelsLine << ", ...)...");
+                if (!(OnGifColumn
+                      (pixels[pixelColumn], pixelColumn, pixelsLine,
+                       height, width, colors, interlaceType, backgroundPixel, colorMap))) {
+                    LOG_ERROR("...failed on OnGifColumn(pixels[pixelColumn = " << pixelColumn << "], pixelColumn = " << pixelColumn << ", pixelsLine = " << pixelsLine << ", ...)");
+                    success = false;
+                    break;
+                }
+            }
+            LOG_TRACE("...} for (...; " << pixelColumn << " < " << pixelsLength << ";...)");
+
+            LOG_TRACE("OnEndGifLine(pixels, pixelsLength, pixelsLine, height, width, ...)...");
+            if (!(OnEndGifLine
+                  (pixels, pixelsLength, pixelsLine, height, width, 
+                   colors, interlaceType, backgroundPixel, colorMap))) {
+                LOG_ERROR("...failed on OnEndGifLine(pixels, pixelsLength, pixelsLine, height, width, ...)");
+                success = false;
+            } else {
+            }
+        }
+        return success;
+    }
+    virtual bool OnGifColumn
+    (GifPixelType& pixel, 
+     TSIZE pixelColumn, TSIZE pixelLine,
+     TSIZE height, TSIZE width, 
+     TSIZE colors, UINT interlaceType,
+     GifPixelType backgroundPixel, 
+     ColorMapObject* colorMap) {
+        bool success = true;
+        if ((colorMap) && (pixel < (colorMap->ColorCount))) {
+            GifColorType color = colorMap->Colors[pixel];
+            
+            LOG_TRACE("OnGifPixelColor(color, pixel, pixelColumn, pixelLine, ...)...");
+            if (!(success = OnGifPixelColor
+                  (color, pixel, pixelColumn, pixelLine,
+                   height, width, colors, interlaceType,
+                   backgroundPixel, colorMap))) {
+                LOG_ERROR("...failed on OnGifPixelColor(color, pixel, pixelColumn, pixelLine, ...)");
+            }
+        }
+        return success;
+    }
+    
+protected:
     const char* file_;
     gif_file_t gif_file_;
-    gif_pixel_array_t gif_pixel_;
+    gif_pixel_array_t gif_pixel_buffer_;
 };
 
 } /// namespace giflib

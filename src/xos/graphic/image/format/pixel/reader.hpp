@@ -38,6 +38,15 @@ class _EXPORT_CLASS readert: virtual public TImplements {
 public:
     typedef TImplements implements;
 
+    typedef typename implements::pixel_value_interpretation_t pixel_value_interpretation_t;
+    enum {
+        pixel_value_interpretation_none = implements::pixel_value_interpretation_none,
+        pixel_value_interpretation_greyscale = implements::pixel_value_interpretation_greyscale,
+        pixel_value_interpretation_rgb = implements::pixel_value_interpretation_rgb,
+        pixel_value_interpretation_rgba = implements::pixel_value_interpretation_rgba,
+        pixel_value_interpretation_palette = implements::pixel_value_interpretation_palette,
+    };
+
     virtual bool read() {
         return false;
     }

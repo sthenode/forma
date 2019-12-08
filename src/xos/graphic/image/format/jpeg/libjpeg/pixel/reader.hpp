@@ -43,7 +43,6 @@ public:
     typedef reader_events_implements events_implements;
     typedef reader_reader_implements implements;
 
-    typedef typename events_implements::pixel_t pixel_t;
     typedef typename implements::rgba_pixel_t rgba_pixel_t;
     typedef typename implements::pixel_value_interpretation_t pixel_value_interpretation_t;
     enum {
@@ -65,7 +64,6 @@ public:
     typedef reader derives;
 
     typedef typename implements::rgba_pixel_t rgba_pixel_t;
-    typedef typename implements::pixel_t pixel_t;
     typedef typename implements::pixel_value_interpretation_t pixel_value_interpretation_t;
     enum {
         pixel_value_interpretation_none = implements::pixel_value_interpretation_none,

@@ -45,7 +45,6 @@ public:
     typedef TEventsImplements events_implements;
     typedef TImplements implements;
 
-    typedef typename events_implements::pixel_t pixel_t;
     typedef typename implements::rgba_pixel_t rgba_pixel_t;
     typedef typename implements::pixel_value_interpretation_t pixel_value_interpretation_t;
     enum {
@@ -53,6 +52,7 @@ public:
         pixel_value_interpretation_greyscale = implements::pixel_value_interpretation_greyscale,
         pixel_value_interpretation_rgb = implements::pixel_value_interpretation_rgb,
         pixel_value_interpretation_rgba = implements::pixel_value_interpretation_rgba,
+        pixel_value_interpretation_palette = implements::pixel_value_interpretation_palette,
     };
 };
 typedef reader_implementst<> reader_implements;
@@ -69,13 +69,13 @@ public:
     typedef readert derives;
 
     typedef typename implements::rgba_pixel_t rgba_pixel_t;
-    typedef typename implements::pixel_t pixel_t;
     typedef typename implements::pixel_value_interpretation_t pixel_value_interpretation_t;
     enum {
         pixel_value_interpretation_none = implements::pixel_value_interpretation_none,
         pixel_value_interpretation_greyscale = implements::pixel_value_interpretation_greyscale,
         pixel_value_interpretation_rgb = implements::pixel_value_interpretation_rgb,
         pixel_value_interpretation_rgba = implements::pixel_value_interpretation_rgba,
+        pixel_value_interpretation_palette = implements::pixel_value_interpretation_palette,
     };
 
     readert(const char* file)
@@ -103,13 +103,87 @@ public:
         }
         return false;
     }
+    
+protected:
+    virtual bool OnGifPixelColor
+    (GifColorType& color, GifPixelType& pixel, 
+     TSIZE pixelColumn, TSIZE pixelLine,
+     TSIZE height, TSIZE width, 
+     TSIZE colors, UINT interlaceType,
+     GifPixelType backgroundPixel, 
+     ColorMapObject* colorMap) {
+        bool success = false;
+        if ((OnGifPixel_)) {
+            success = (this->*OnGifPixel_)
+            (color, pixel, pixelColumn, pixelLine, height, width, 
+             colors, interlaceType, backgroundPixel, colorMap);
+        }
+        return success;
+    }
+    virtual bool OnPaletteGifPixelColor
+    (GifColorType& color, GifPixelType& pixel, 
+     TSIZE pixelColumn, TSIZE pixelLine,
+     TSIZE height, TSIZE width, 
+     TSIZE colors, UINT interlaceType,
+     GifPixelType backgroundPixel, 
+     ColorMapObject* colorMap) {
+        bool success = true;
+        size_t red = color.Red, green = color.Green, blue = color.Blue;
+        rgba_pixel_t pix(red, green, blue, ((byte_t)-1), ((byte_t)-1));
+
+        LOG_TRACE("this->on_image_pixel(pix, 0, 0, pixelColumn = " << pixelColumn << ", pixelLine = " << pixelLine << ", 0, width = " << width << ", height = " << height << ", ...)...");
+        if (!(success = this->on_image_pixel
+        (pix, 0, 0, pixelColumn, pixelLine, 0, width, height, 
+         1, 3, 8, pixel_value_interpretation_palette))) {
+            LOG_ERROR("...failed on this->on_image_pixel(pix, 0, 0, pixelColumn = " << pixelColumn << ", pixelLine = " << pixelLine << ", 0, width = " << width << ", height = " << height << ", ...)...");
+        }
+        return success;
+    }
+
+    virtual bool OnBeginGifImage
+    (TSIZE height, TSIZE width, 
+     TSIZE colors, UINT interlaceType,
+     GifPixelType backgroundPixel, 
+     ColorMapObject* colorMap) {
+        bool success = false;
+        if ((colorMap)) {
+            LOG_DEBUG("this->on_begin_image(width = " << width << ", height = " << height << ", depth = 1, values = 3, bits = 8, pixel_value_interpretation_palette)...");
+            if (!(success = this->on_begin_image
+                  (width, height, 1, 3, 8, pixel_value_interpretation_palette))) {
+                LOG_ERROR("...failed on this->on_begin_image(width = " << width << ", height = " << height << ", depth = 1, values = 3, bits = 8, pixel_value_interpretation_palette)");
+            } else {
+                OnGifPixel_ = &derives::OnPaletteGifPixelColor;
+            }
+        } else {
+            LOG_ERROR("...unexpected colorMap == 0");
+        }
+        return success;
+    }
+    virtual bool OnEndGifImage
+    (TSIZE height, TSIZE width, 
+     TSIZE colors, UINT interlaceType,
+     GifPixelType backgroundPixel, 
+     ColorMapObject* colorMap) {
+        bool success = false;
+        if ((colorMap)) {
+            LOG_DEBUG("this->on_end_image(width = " << width << ", height = " << height << ", depth = 1, values = 3, bits = 8, pixel_value_interpretation_palette)...");
+            if (!(success = this->on_end_image
+                  (width, height, 1, 3, 8, pixel_value_interpretation_palette))) {
+                LOG_ERROR("...failed on this->on_end_image(width = " << width << ", height = " << height << ", depth = 1, values = 3, bits = 8, pixel_value_interpretation_palette)");
+            }
+            OnGifPixel_ = 0;
+        } else {
+            LOG_ERROR("...unexpected colorMap == 0");
+        }
+        return success;
+    }
+
 
 protected:
     giflib::file_reader reader_;
     pixel_value_interpretation_t pixel_value_interpretation_;
     bool (derives::*OnGifPixel_)
-    (pixel_t& pixel,
-     GifColorType& color,GifPixelType& columnPixel, 
+    (GifColorType& color,GifPixelType& columnPixel, 
      TSIZE pixelColumn, TSIZE pixelLine,
      TSIZE height, TSIZE width, 
      TSIZE colors, UINT interlaceType,

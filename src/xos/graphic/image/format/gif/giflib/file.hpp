@@ -121,7 +121,7 @@ public:
         if ((detached = this->attached_to())) {
             if ((line) && (size)) {
                 int err = GIF_OK;
-                LOG_DEBUG("DGifGetLine(detached = " << pointer_to_string(detached) << ", line = " << pointer_to_string(line) << ", size = " << size << ")...");
+                LOG_TRACE("DGifGetLine(detached = " << pointer_to_string(detached) << ", line = " << pointer_to_string(line) << ", size = " << size << ")...");
                 if (GIF_OK == (err = DGifGetLine(detached, line, size))) {
                     return size;
                 } else {
